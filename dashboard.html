@@ -13,7 +13,7 @@
     .user-email { color:#aaa; margin-right:20px; }
     button { background:#6e6eff; color:white; border:none; padding:10px 20px; border-radius:50px; cursor:pointer; }
     .main { padding:120px 40px 40px; text-align:center; }
-    h1 { font-size:3rem; background:linear-gradient(90deg,#6e6eff,#a29bfe); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:20px; }
+    h1 { font-size:3rem; background:linear-gradient(90deg,#6e6eff,#a29bfe); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
     .designs-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:30px; margin-top:50px; }
     .design-card { cursor:pointer; border-radius:16px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.5); transition:0.3s; }
     .design-card:hover { transform:translateY(-10px); }
@@ -29,7 +29,7 @@
   </div>
 </nav>
 <div class="main">
-  <h1 id="welcomeMessage">Welcome back!</h1>
+  <h1>Welcome back!</h1>
   <p id="noDesigns" style="color:#888;margin:30px 0;">Your designs will appear here soon.</p>
   <div class="designs-grid" id="designsGrid"></div>
   <br><br>
@@ -44,12 +44,7 @@
 
   async function init() {
     const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { location.href = 'auth.html'; return; }
-
-    // Show personalized welcome
-    const name = user.user_metadata.full_name || user.email.split('@')[0];
-    document.getElementById('welcomeMessage').innerHTML = `Welcome, <strong>${name}</strong>!`;
-
+    if (!user) location.href = 'auth.html';
     document.getElementById('userEmail').textContent = user.email;
 
     const { data, error } = await supabase
@@ -58,10 +53,8 @@
             .eq('user_id', user.id)
             .order('created_at', { ascending: false });
 
-    if (error || !data || data.length === 0) {
-      document.getElementById('noDesigns').style.display = 'block';
-      return;
-    }
+    if (error) { console.error(error); return; }
+    if (data.length === 0) return;
 
     document.getElementById('noDesigns').style.display = 'none';
     const grid = document.getElementById('designsGrid');

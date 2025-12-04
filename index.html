@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>ColorCraz - Professional Graphic Design Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <style>
+        /* Your existing beautiful CSS – unchanged */
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:#0f0f1a; color:#e0e0ff; line-height:1.6; overflow-x:hidden; }
+        .background-image { position:fixed; top:0; left:0; width:100vw; height:100vh; background:url('images/my.png') center/cover no-repeat; z-index:-1; }
+        .container { max-width:1200px; margin:0 auto; padding:0 20px; }
+        section { padding:100px 0; }
+        .navbar { position:fixed; top:0; width:100%; background:rgba(10,10,30,0.95); backdrop-filter:blur(10px); z-index:1000; padding:20px 0; }
+        .nav-container { max-width:1200px; margin:0 auto; padding:0 20px; display:flex; justify-content:space-between; align-items:center; }
+        .logo { font-size:40px; font-weight:800; color:#6e6eff; letter-spacing:-1px; }
+        .nav-menu { display:flex; gap:40px; list-style:none; }
+        .nav-link { color:#ccc; text-decoration:none; font-weight:500; position:relative; }
+        .nav-link::after { content:''; position:absolute; width:0; height:2px; bottom:-8px; left:0; background:#6e6eff; transition:0.3s; }
+        .nav-link:hover::after, .nav-link.active::after { width:100%; }
+        .nav-link:hover, .nav-link.active { color:#fff; }
+        .nav-right { display:flex; align-items:center; gap:16px; }
+        .btn-login-nav, .btn-signup-nav { padding:10px 26px; border-radius:50px; text-decoration:none; font-weight:600; font-size:0.95rem; transition:all 0.3s ease; }
+        .btn-login-nav { background:transparent; color:#6e6eff; border:2px solid #6e6eff; }
+        .btn-login-nav:hover { background:#6e6eff; color:white; transform:translateY(-3px); box-shadow:0 10px 25px rgba(110,110,255,0.35); }
+        .btn-signup-nav { background:#6e6eff; color:white; box-shadow:0 8px 22px rgba(110,110,255,0.3); }
+        .btn-signup-nav:hover { background:#5a5aff; transform:translateY(-4px); }
+        .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
+        .hamburger span { width:28px; height:3px; background:#6e6eff; transition:0.3s; }
+        .hamburger.active span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+        .hamburger.active span:nth-child(2) { opacity:0; }
+        .hamburger.active span:nth-child(3) { transform:rotate(-45deg) translate(7px,-6px); }
+        .hero { min-height:100vh; display:flex; align-items:center; justify-content:space-between; padding:0 5%; gap:50px; }
+        .hero-content { max-width:600px; animation:fadeInLeft 1s ease-out; }
+        .hero-content h1 { font-size:4.5rem; font-weight:800; line-height:1.1; margin-bottom:20px; }
+        .hero-content h1 span { color:#6e6eff; }
+        .hero-content p { font-size:1.3rem; margin-bottom:40px; color:#aaa; }
+        .hero-buttons { display:flex; gap:20px; flex-wrap:wrap; }
+        .btn-primary, .btn-secondary { padding:14px 32px; border-radius:50px; text-decoration:none; font-weight:600; transition:0.3s; }
+        .btn-primary { background:#6e6eff; color:white; box-shadow:0 10px 30px rgba(110,110,255,0.3); }
+        .btn-primary:hover { transform:translateY(-5px); box-shadow:0 20px 40px rgba(110,110,255,0.4); }
+        .btn-secondary { background:transparent; color:#ccc; border:2px solid #444; }
+        .btn-secondary:hover { background:#6e6eff; border-color:#6e6eff; color:white; }
+        .hero-image { position:relative; width:500px; height:500px; }
+        .floating-card { position:absolute; width:300px; height:400px; border-radius:20px; overflow:hidden; box-shadow:0 20px 50px rgba(0,0,0,0.6); border:1px solid rgba(110,110,255,0.3); transition:all 0.4s; }
+        .floating-card img { width:100%; height:100%; object-fit:cover; }
+        .floating-card:hover { transform:translateY(-15px) scale(1.04); }
+        .floating-card:nth-child(1) { top:50px; left:100px; transform:rotate(10deg); animation:float 6s ease-in-out infinite; }
+        .floating-card:nth-child(2) { top:150px; left:0; transform:rotate(-15deg); animation:float 6s ease-in-out infinite 2s; }
+        .floating-card:nth-child(3) { top:250px; left:150px; transform:rotate(20deg); animation:float 6s ease-in-out infinite 4s; }
+        @keyframes float { 0%,100% { transform:translateY(0) rotate(var(--r,10deg)); } 50% { transform:translateY(-30px) rotate(calc(var(--r,10deg)+5deg)); } }
+        @keyframes fadeInLeft { from { opacity:0; transform:translateX(-50px); } to { opacity:1; transform:translateX(0); } }
+        .section-title { text-align:center; font-size:3rem; margin-bottom:70px; background:linear-gradient(90deg,#6e6eff,#a29bfe); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .catalog-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:30px; }
+        .template-card { background:#1a1a2e; border-radius:20px; overflow:hidden; transition:0.4s; position:relative; cursor:pointer; }
+        .template-card:hover { transform:translateY(-15px); box-shadow:0 30px 60px rgba(110,110,255,0.2); }
+        .template-thumb { height:200px; background:var(--img) center/cover no-repeat; }
+        .template-card h3 { padding:20px 20px 0; font-size:1.5rem; }
+        .btn-buy { width:100%; padding:15px; background:#6e6eff; color:white; border:none; font-size:1.1rem; cursor:pointer; transition:0.3s; }
+        .btn-buy:hover { background:#5a5aff; }
+        @media (max-width:992px) { .nav-menu, .btn-login-nav, .btn-signup-nav { display:none; } .hamburger { display:flex; } .nav-menu.active { display:flex; position:fixed; top:80px; left:0; width:100%; height:100vh; background:#0f0f1a; flex-direction:column; align-items:center; justify-content:center; } }
+        @media (max-width:768px) { .hero { flex-direction:column; text-align:center; padding-top:120px; } .hero-content h1 { font-size:3rem; } .hero-image { width:100%; height:400px; } }
+    </style>
+</head>
+<body>
+<div class="background-image"></div>
+<nav class="navbar">
+    <div class="nav-container">
+        <div class="logo">ColorCraz</div>
+        <ul class="nav-menu">
+            <li><a href="#" class="nav-link active">Home</a></li>
+            <li><a href="#catalog" class="nav-link">Templates</a></li>
+        </ul>
+        <div class="nav-right">
+            <a href="auth.html" class="btn-login-nav">Log In</a>
+            <a href="auth.html" class="btn-signup-nav">Sign Up Free</a>
+            <div class="hamburger"><span></span><span></span><span></span></div>
+        </div>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Create Stunning Designs <span>Instantly</span></h1>
+        <p>Professional templates, AI-powered tools, and unlimited creativity — all in one platform.</p>
+        <div class="hero-buttons">
+            <a href="#catalog" class="btn-primary">Explore Templates</a>
+            <a href="auth.html" class="btn-secondary">Get Started Free</a>
+        </div>
+    </div>
+    <div class="hero-image">
+        <div class="floating-card"><img src="images/1.png" alt="Design 1"></div>
+        <div class="floating-card"><img src="images/2.png" alt="Design 2"></div>
+        <div class="floating-card"><img src="images/3.png" alt="Design 3"></div>
+    </div>
+</section>
+
+<section id="catalog" class="catalog">
+    <div class="container">
+        <h2 class="section-title">Choose a Template</h2>
+        <div class="catalog-grid" id="templateGrid"></div>
+    </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+    const supabase = Supabase.createClient(
+        'https://enjczoepifvolmqooccd.supabase.co',
+        'sb_publishable_uEMVu8A5fHuDxuHqWC-4A_PceL8yGI'
+    );
+
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+    });
+
+    const templates = [
+        {name:"Neon Instagram Post", img:"https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600"},
+        {name:"Modern Business Card", img:"https://images.unsplash.com/photo-1584362912532-53b2fd6d0bf6?w=600"},
+        {name:"Cyberpunk YouTube Thumbnail", img:"https://images.unsplash.com/photo-1620714223084-8fc8b19b9541?w=600"},
+        {name:"Minimal Poster", img:"https://images.unsplash.com/photo-1544966462-41093e5e7c7d?w=600"},
+        {name:"Gradient Story", img:"https://images.unsplash.com/photo-1557682250-33bd709cbe85?w=600"},
+        {name:"Vaporwave Banner", img:"https://images.unsplash.com/photo-1557682257-2f1b29d2c2e6?w=600"},
+        {name:"Retro Flyer", img:"https://images.unsplash.com/photo-1519389951292-2e9c0b8e7596?w=600"}
+    ];
+
+    const grid = document.getElementById('templateGrid');
+    templates.forEach(t => {
+        const card = document.createElement('div');
+        card.className = 'template-card';
+        card.innerHTML = `
+      <div class="template-thumb" style="background-image:url('${t.img}')"></div>
+      <h3>${t.name}</h3>
+      <button class="btn-buy" onclick="startEditing('${t.img}')">Use Template</button>
+    `;
+        grid.appendChild(card);
+    });
+
+    function startEditing(img) {
+        localStorage.setItem('templateImage', img);
+        location.href = 'editor.html';
+    }
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+</script>
+</body>
+</html>

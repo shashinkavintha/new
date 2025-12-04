@@ -1,0 +1,34 @@
+<section id="catalog" class="catalog">
+  <div class="container">
+    <h2 class="section-title">Choose a Template</h2>
+    <div class="catalog-grid" id="templateGrid">
+      <!-- Filled by JS -->
+    </div>
+  </div>
+</section>
+
+<script>
+  const templates = [
+    { name: "Instagram Post – Neon Vibes", thumb: "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=600" },
+    { name: "Business Card – Modern", thumb: "https://images.unsplash.com/photo-1584362912532-53b2fd6d0bf6?w=600" },
+    { name: "YouTube Thumbnail – Cyberpunk", thumb: "https://images.unsplash.com/photo-1620714223084-8fc8b19b9541?w=600" },
+    // add 20+ more
+  ];
+
+  const grid = document.getElementById('templateGrid');
+  templates.forEach(t => {
+    const card = document.createElement('div');
+    card.className = 'template-card';
+    card.innerHTML = `
+      <div class="template-thumb" style="background-image:url('${t.thumb}')"></div>
+      <h3>${t.name}</h3>
+      <button onclick="startEditing('${t.thumb}')">Use Template</button>
+    `;
+    grid.appendChild(card);
+  });
+
+  function startEditing(img) {
+    localStorage.setItem('templateImage', img);
+    window.location.href = 'editor.html';
+  }
+</script>

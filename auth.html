@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ColorCraz – Login or Sign Up</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Inter',sans-serif; background:#0f0f1a; color:white; min-height:100vh; display:flex; align-items:center; justify-content:center; position:relative; }
+    body::before { content:''; position:absolute; inset:0; background:url('images/my.png') center/cover no-repeat fixed; z-index:-2; }
+    body::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(10,10,30,0.95),rgba(20,20,60,0.9)); z-index:-1; }
+    .card { background:rgba(20,20,50,0.45); backdrop-filter:blur(16px); padding:50px 40px; border-radius:24px; width:420px; text-align:center; border:1px solid rgba(110,110,255,0.3); box-shadow:0 30px 80px rgba(0,0,0,0.6); }
+    .logo { font-size:44px; font-weight:800; color:#6e6eff; margin-bottom:10px; }
+    h2 { font-size:28px; margin:20px 0; }
+    input { width:100%; padding:16px 20px; margin:12px 0; background:rgba(40,40,80,0.5); border:1px solid rgba(110,110,255,0.3); border-radius:14px; color:white; font-size:16px; transition:0.3s; }
+    input:focus { outline:none; border-color:#6e6eff; box-shadow:0 0 0 4px rgba(110,110,255,0.2); }
+    button { width:100%; padding:16px; background:#6e6eff; border:none; border-radius:14px; color:white; font-weight:600; font-size:18px; cursor:pointer; margin-top:20px; transition:0.3s; }
+    button:hover { background:#5a5aff; transform:translateY(-3px); }
+    button:disabled { background:#444; cursor:not-allowed; transform:none; }
+    .switch { margin-top:30px; color:#aaa; }
+    .switch span { color:#6e6eff; cursor:pointer; font-weight:600; text-decoration:underline; }
+  </style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">ColorCraz</div>
+  <h2 id="title">Create Your Account</h2>
+  <div id="oauth-buttons"></div>
+  <div style="text-align:center;color:#888;margin:20px 0;font-size:0.9rem;">or continue with email</div>
+  <input type="email" id="email" placeholder="Email Address" required />
+  <input type="password" id="password" placeholder="Password (6+ characters)" required />
+  <button id="mainBtn">Sign Up Free</button>
+  <div class="switch">
+    Already have an account? <span id="switchText">Log In</span>
+  </div>
+</div>
+
+<script>
+  const supabase = Supabase.createClient(
+          'https://enjczoepifvolmqooccd.supabase.co',
+          'sb_publishable_uEMVu8A5fHuDxuHqWC-4A_PceL8yGI'
+  );
+
+  document.getElementById('oauth-buttons').innerHTML = `
+    <div style="display:flex;gap:15px;margin-bottom:20px;">
+      <button onclick="oauth('google')" style="flex:1;padding:14px;background:#fff;color:#000;border-radius:12px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:10px;">
+        <img src="https://www.google.com/favicon.ico" width="20"> Google
+      </button>
+      <button onclick="oauth('github')" style="flex:1;padding:14px;background:#333;color:white;border-radius:12px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:10px;">
+        <img src="https://github.githubassets.com/favicons/favicon.svg" width="20"> GitHub
+      </button>
+    </div>
+  `;
+
+  window.oauth = async (provider) => {
+    await supabase.auth.signInWithOAuth({
+      provider,
+      options: { redirectTo: location.origin + '/dashboard.html' }
+    });
+  };
+
+  let isLogin = false;
+  const title = document.getElementById('title');
+  const mainBtn = document.getElementById('mainBtn');
+  const switchText = document.getElementById('switchText');
+
+  switchText.onclick = () => {
+    isLogin = !isLogin;
+    title.textContent = isLogin ? 'Welcome Back!' : 'Create Your Account';
+    mainBtn.textContent = isLogin ? 'Log In' : 'Sign Up Free';
+  };
+
+  mainBtn.onclick = async () => {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    if (!email || !password) return alert('Fill all fields');
+    mainBtn.disabled = true;
+    mainBtn.textContent = isLogin ? 'Logging in...' : 'Creating...';
+
+    let error;
+    if (isLogin) {
+      ({ error } = await supabase.auth.signInWithPassword({ email, password }));
+    } else {
+      ({ error } = await supabase.auth.signUp({ email, password }));
+    }
+
+    if (error) {
+      alert(error.message);
+    } else if (isLogin) {
+      location.href = 'dashboard.html';
+    } else {
+      confetti({ particleCount:150, spread:70, origin:{y:0.6} });
+      alert('Check your email to confirm!');
+    }
+    mainBtn.disabled = false;
+    mainBtn.textContent = isLogin ? 'Log In' : 'Sign Up Free';
+  };
+</script>
+</body>
+</html>

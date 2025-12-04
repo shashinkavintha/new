@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard – ColorCraz</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    body { margin:0; font-family:'Inter',sans-serif; background:#0f0f1a; color:white; min-height:100vh; }
+    .navbar { padding:20px; background:rgba(10,10,30,0.95); backdrop-filter:blur(10px); display:flex; justify-content:space-between; align-items:center; position:fixed; width:100%; top:0; z-index:1000; }
+    .logo { font-size:32px; font-weight:800; color:#6e6eff; }
+    .user-email { color:#aaa; margin-right:20px; }
+    button { background:#6e6eff; color:white; border:none; padding:10px 20px; border-radius:50px; cursor:pointer; }
+    .main { padding:120px 40px 40px; text-align:center; }
+    h1 { font-size:3rem; background:linear-gradient(90deg,#6e6eff,#a29bfe); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .designs-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:30px; margin-top:50px; }
+    .design-card { cursor:pointer; border-radius:16px; overflow:hidden; box-shadow:0 10px 30px rgba(0,0,0,0.5); transition:0.3s; }
+    .design-card:hover { transform:translateY(-10px); }
+    .design-card img { width:100%; height:200px; object-fit:cover; }
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="logo">ColorCraz</div>
+  <div>
+    <span class="user-email" id="userEmail"></span>
+    <button id="logoutBtn">Logout</button>
+  </div>
+</nav>
+<div class="main">
+  <h1>Welcome back!</h1>
+  <p id="noDesigns" style="color:#888;margin:30px 0;">Your designs will appear here soon.</p>
+  <div class="designs-grid" id="designsGrid"></div>
+  <br><br>
+  <a href="editor.html" style="background:#6e6eff;color:white;padding:16px 40px;border-radius:50px;text-decoration:none;font-size:1.2rem;">+ Create New Design</a>
+</div>
+
+<script>
+  const supabase = Supabase.createClient(
+          'https://enjczoepifvolmqooccd.supabase.co',
+          'sb_publishable_uEMVu8A5fHuDxuHqWC-4A_PceL8yGI'
+  );
+
+  async function init() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) location.href = 'auth.html';
+    document.getElementById('userEmail').textContent = user.email;
+
+    const { data, error } = await supabase
+            .from('designs')
+            .select()
+            .eq('user_id', user.id)
+            .order('created_at', { ascending: false });
+
+    if (error) { console.error(error); return; }
+    if (data.length === 0) return;
+
+    document.getElementById('noDesigns').style.display = 'none';
+    const grid = document.getElementById('designsGrid');
+    data.forEach(d => {
+      const div = document.createElement('div');
+      div.className = 'design-card';
+      div.innerHTML = `<img src="${d.thumbnail}"><div style="padding:15px;background:#1a1a2e;"><p><strong>${d.name}</strong></p></div>`;
+      div.onclick = () => {
+        localStorage.setItem('loadDesignId', d.id);
+        location.href = 'editor.html';
+      };
+      grid.appendChild(div);
+    });
+  }
+
+  document.getElementById('logoutBtn').onclick = async () => {
+    await supabase.auth.signOut();
+    location.href = 'auth.html';
+  };
+
+  init();
+</script>
+</body>
+</html>

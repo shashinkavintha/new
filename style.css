@@ -1,0 +1,446 @@
+/* Reset & Base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: #0f0f1a;
+    color: #e0e0ff;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+.background-image {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: url('images/my.png') center/cover no-repeat;
+    z-index: -1;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+section {
+    padding: 100px 0;
+}
+
+/* Navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(10, 10, 30, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    padding: 20px 0;
+    transition: all 0.4s;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 40px;
+    font-weight: 800;
+    color: #6e6eff;
+    letter-spacing: -1px;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+}
+
+.nav-link {
+    color: #ccc;
+    text-decoration: none;
+    font-weight: 500;
+    transition: 0.3s;
+    position: relative;
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -8px;
+    left: 0;
+    background: #6e6eff;
+    transition: 0.3s;
+}
+
+.nav-link:hover::after, .nav-link.active::after {
+    width: 100%;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: #fff;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: #6e6eff;
+    transition: 0.3s;
+}
+
+/* Hero */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5%;
+    text-shadow: #0a0a1a 20px -10px 20px;
+}
+
+.hero-content {
+    max-width: 600px;
+    animation: fadeInLeft 1s ease-out;
+}
+
+.hero-content h1 {
+    font-size: 4.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 20px;
+}
+
+.hero-content h1 span {
+    color: #6e6eff;
+}
+
+.hero-content p {
+    font-size: 1.3rem;
+    margin-bottom: 40px;
+    color: #aaa;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+}
+
+.btn-primary {
+    background: #6e6eff;
+    color: white;
+    padding: 14px 32px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+    box-shadow: 0 10px 30px rgba(110, 110, 255, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(110, 110, 255, 0.4);
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #ccc;
+    border: 2px solid #444;
+    padding: 14px 32px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-secondary:hover {
+    background: #6e6eff;
+    border-color: #6e6eff;
+    color: white;
+}
+
+/* UPDATED PART: Floating Cards with REAL IMAGES */
+.hero-image {
+    position: relative;
+    width: 500px;
+    height: 500px;
+}
+
+.floating-card {
+    position: absolute;
+    width: 300px;
+    height: 400px;
+    border-radius: 20px;
+    overflow: hidden;                  /* important for image */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    border: 1px solid rgba(110,110,255,0.3);
+    transition: all 0.4s ease;
+}
+
+.floating-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Hover effect */
+.floating-card:hover {
+    transform: translateY(-15px) scale(1.04);
+    box-shadow: 0 35px 70px rgba(110,110,255,0.4);
+}
+
+/* Same positions & animation as before */
+.floating-card:nth-child(1) { top: 50px; left: 100px; transform: rotate(10deg); animation: float 6s ease-in-out infinite; }
+.floating-card:nth-child(2) { top: 150px; left: 0; transform: rotate(-15deg); animation: float 6s ease-in-out infinite 2s; }
+.floating-card:nth-child(3) { top: 250px; left: 150px; transform: rotate(20deg); animation: float 6s ease-in-out infinite 4s; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(var(--rotate, 10deg)); }
+    50% { transform: translateY(-30px) rotate(calc(var(--rotate, 10deg) + 5deg)); }
+}
+
+@keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-50px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Everything below is 100% unchanged — exactly as you had */
+.section-title {
+    text-align: center;
+    font-size: 3rem;
+    margin-bottom: 70px;
+    background: linear-gradient(90deg, #6e6eff, #a29bfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* About */
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+}
+
+.about-text p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    color: #bbb;
+}
+
+.stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 40px;
+}
+
+.stats div {
+    font-size: 1.5rem;
+}
+
+.stats strong {
+    display: block;
+    font-size: 2rem;
+    color: #6e6eff;
+}
+
+.mockup {
+    width: 100%;
+    height: 500px;
+    background: url('https://via.placeholder.com/600x500/1a1a3a/6e6eff?text=Design+Mockup') center/cover no-repeat;
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+/* Catalog, Reviews, Contact, Footer, Responsive — all untouched */
+.catalog-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+.template-card { background: #1a1a2e; border-radius: 20px; overflow: hidden; transition: 0.4s; position: relative; }
+.template-card:hover { transform: translateY(-15px); box-shadow: 0 30px 60px rgba(110, 110, 255, 0.2); }
+.template-thumb { height: 200px; }
+.template-card h3 { padding: 20px; font-size: 1.5rem; }
+.template-card p { padding: 0 20px; color: #aaa; }
+.price { padding: 0 20px 20px; font-size: 1.8rem; font-weight: bold; color: #6e6eff; }
+.old-price { font-size: 1rem; color: #666; text-decoration: line-through; margin-left: 10px; }
+.btn-buy { width: 100%; padding: 15px; background: #6e6eff; color: white; border: none; font-size: 1.1rem; cursor: pointer; transition: 0.3s; }
+.btn-buy:hover { background: #5a5aff; }
+.featured { border: 2px solid #6e6eff; }
+.badge { position: absolute; top: 15px; right: -40px; background: #ff6b6b; color: white; padding: 8px 50px; transform: rotate(45deg); font-size: 0.9rem; font-weight: bold; }
+
+.reviews-carousel { position: relative; max-width: 800px; margin: 0 auto; text-align: center; overflow: hidden; }
+.review { display: none; animation: fadeIn 1s; font-size: 1.4rem; color: #ddd; }
+.review.active { display: block; }
+.author { margin-top: 30px; color: #6e6eff; font-weight: 600; }
+.carousel-dots { text-align: center; margin-top: 40px; }
+.dot { height: 12px; width: 12px; margin: 0 8px; background-color: #444; border-radius: 50%; display: inline-block; cursor: pointer; transition: 0.3s; }
+.dot.active, .dot:hover { background-color: #6e6eff; }
+
+.contact-form { max-width: 600px; margin: 0 auto; display: grid; gap: 20px; }
+.contact-form input,
+.contact-form textarea { padding: 18px; border-radius: 12px; border: none; background: #1a1a2e; color: white; font-size: 1.1rem; }
+.contact-form input::placeholder,
+.contact-form textarea::placeholder { color: #777; }
+
+footer {
+    background: #0a0a1a;
+    padding: 40px 0;
+    text-align: center;
+    color: #666;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hamburger { display: flex; }
+    .nav-menu {
+        position: fixed;
+        top: 80px;
+        left: -100%;
+        height: 100vh;
+        width: 100%;
+        background: #0f0f1a;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        transition: 0.5s;
+    }
+    .nav-menu.active { left: 0; }
+    .hero { flex-direction: column; text-align: center; padding-top: 120px; }
+    .hero-content h1 { font-size: 3rem; }
+    .about-grid { grid-template-columns: 1fr; }
+}
+/* NEW: Log In Button in Navbar */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.btn-login-nav {
+    background: transparent;
+    color: #6e6eff;
+    border: 2px solid #6e6eff;
+    padding: 10px 24px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.btn-login-nav:hover {
+    background: #6e6eff;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(110, 110, 255, 0.3);
+}
+
+/* Hide login button on mobile (hamburger takes over) */
+@media (max-width: 768px) {
+    .btn-login-nav { display: none; }
+    .nav-right { gap: 15px; }
+}
+/* NEW: Log In Button in Navbar */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.btn-login-nav {
+    background: transparent;
+    color: #6e6eff;
+    border: 2px solid #6e6eff;
+    padding: 10px 24px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.btn-login-nav:hover {
+    background: #6e6eff;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(110, 110, 255, 0.3);
+}
+
+/* Hide login button on mobile (hamburger takes over) */
+@media (max-width: 768px) {
+    .btn-login-nav { display: none; }
+    .nav-right { gap: 15px; }
+}
+/* ==================== NAVBAR BUTTONS (Log In + Sign Up) ==================== */
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.btn-login-nav {
+    background: transparent;
+    color: #6e6eff;
+    border: 2px solid #6e6eff;
+    padding: 10px 26px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+}
+
+.btn-login-nav:hover {
+    background: #6e6eff;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(110, 110, 255, 0.35);
+}
+
+.btn-signup-nav {
+    background: #6e6eff;
+    color: white;
+    padding: 12px 30px;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 22px rgba(110, 110, 255, 0.3);
+}
+
+.btn-signup-nav:hover {
+    background: #5a5aff;
+    transform: translateY(-4px);
+    box-shadow: 0 15px 35px rgba(110, 110, 255, 0.5);
+}
+
+/* Hide buttons on mobile - only hamburger shows */
+@media (max-width: 992px) {
+    .btn-login-nav,
+    .btn-signup-nav {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .hamburger { display: flex; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 28px; height: 3px; background: #6e6eff; transition: 0.3s; }
+}
